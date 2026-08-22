@@ -1,7 +1,7 @@
 """
 main.py
 """
-from validators import normalize_url
+from validators import normalize_url, is_valid_url
 
 
 def main():
@@ -10,7 +10,8 @@ def main():
     """
     url = input("Enter a website URL: ")
     url = normalize_url(url)
-    print(url)
+    result = is_valid_url(url)
+    print(result)
 
 
 if __name__ == "__main__":
