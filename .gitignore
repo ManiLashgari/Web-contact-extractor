@@ -1,0 +1,8 @@
+# a temporary file for testing
+temp.py
+
+# pycache
+tests/__pycache__/
+tests/.pytest_cache/
+pytest_cache/
+src/__pycache__/
