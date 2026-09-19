@@ -3,6 +3,7 @@ src/main.py
 """
 from validators import normalize_url, is_valid_url
 from downloader import url_request
+from parser import parser
 
 
 def main():
@@ -14,7 +15,8 @@ def main():
     result = is_valid_url(url)
     if not result:
         exit("Invalid URL!")
-    url_request(url)
+    text = url_request(url)
+    parsed_text = parser(text)
 
 
 if __name__ == "__main__":
