@@ -1,9 +1,10 @@
 """
 src/parser.py
 """
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, Tag
 
-def parser(html: str) -> str:
+
+def parser(html: str) -> tuple[str, Tag | None, Tag | None]:
     """
     Parse the HTML.
     """
@@ -11,4 +12,5 @@ def parser(html: str) -> str:
     title = soup.title.text
     heading = soup.find("h1")
     paragraph = soup.find("p")
-    return  title, heading, paragraph
+
+    return title, heading, paragraph
