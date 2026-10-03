@@ -5,9 +5,11 @@ Handles user input, URL validation, downloading, parsing,
 and processing of website content.
 """
 
-from .parser import parser
-from .validators import normalize_url, is_valid_url
-from .downloader import url_request
+from sys import exit
+from parser import parser
+from validators import normalize_url, is_valid_url
+from downloader import url_request
+from extractor import extract_email
 
 
 def main():
@@ -26,7 +28,7 @@ def main():
 
     text = url_request(url)
     parsed_text = parser(text)
-    print(parsed_text.get_text())
+    print(extract_email(parsed_text))
 
 
 if __name__ == "__main__":
