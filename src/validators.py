@@ -1,5 +1,5 @@
 """
-src/validators.py
+Utilities for validating and normalizing URLs.
 """
 
 from urllib.parse import urlparse
