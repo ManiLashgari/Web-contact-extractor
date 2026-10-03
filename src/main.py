@@ -5,9 +5,9 @@ Handles user input, URL validation, downloading, parsing,
 and processing of website content.
 """
 
-from parser import parser
-from validators import normalize_url, is_valid_url
-from downloader import url_request
+from .parser import parser
+from .validators import normalize_url, is_valid_url
+from .downloader import url_request
 
 
 def main():
