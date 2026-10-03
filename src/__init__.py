@@ -1,5 +1,7 @@
 """
-src/__init__.py
+Web contact extractor package.
+
+Provides utilities for validating and normalizing website URLs.
 """
 
 from .validators import (
