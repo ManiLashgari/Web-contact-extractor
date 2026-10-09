@@ -6,11 +6,16 @@ and processing of website content.
 """
 
 import sys
+
 from parser import parser
+
 from downloader import url_request
-from extractor import extract_email
-from validators import is_valid_url, normalize_url
+
 from excel import save_contacts
+
+from extractor import extract_email
+
+from validators import is_valid_url, normalize_url
 
 
 def main():
