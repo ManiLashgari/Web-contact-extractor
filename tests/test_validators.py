@@ -30,4 +30,4 @@ def test_invalid_url():
     """
     Verify that a URL without a scheme is rejected.
     """
-    assert not is_valid_url("example"
+    assert not is_valid_url("example")

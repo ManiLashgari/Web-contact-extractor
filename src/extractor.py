@@ -1,5 +1,5 @@
 """
-src/extractor.py
+Utilities for extracting email addresses from HTML documents.
 """
 import re
 from bs4 import BeautifulSoup
