@@ -9,9 +9,9 @@ import os
 from openpyxl import Workbook
 
 
-def save_contacts(excel_path: str, website_url: str, data: list[str]) -> None:
+def save_contacts(excel_path: str, website_url: str, contacts: dict[str: list[str]]) -> None:
     """
-    Save extracted email addresses to an Excel file.
+    Save extracted contact addresses to an Excel file.
     """
 
     row_number = 2
@@ -29,13 +29,14 @@ def save_contacts(excel_path: str, website_url: str, data: list[str]) -> None:
         worksheet.cell(row= 1, column= 2, value="Type")
         worksheet.cell(row= 1, column= 3, value="Value")
 
-    for email in data:
-        #URL
-        worksheet.cell(row= row_number, column= 1, value=website_url)
-        #Type
-        worksheet.cell(row= row_number, column= 2, value="Email")
-        #Value
-        worksheet.cell(row= row_number, column= 3, value=email)
+    for contact_type in contacts:
+        for contact in contacts[contact_type]:
+            #URL
+            worksheet.cell(row= row_number, column= 1, value=website_url)
+            #Type
+            worksheet.cell(row= row_number, column= 2, value=contact_type)
+            #Value
+            worksheet.cell(row= row_number, column= 3, value=contact)
 
         row_number =+ 1
 
