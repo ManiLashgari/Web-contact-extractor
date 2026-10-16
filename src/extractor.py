@@ -15,7 +15,7 @@ def extract_email(soup: BeautifulSoup) -> list[str]:
     Returns:
         A list of email addresses found in the text.
     """
-    text = soup.get_text()
+    text = soup.get_text(separator=" ", strip=True)
 
     email_pattern = r"[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+"
 
