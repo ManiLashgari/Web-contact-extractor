@@ -67,8 +67,8 @@ def main():
     print(phone_numbers)
     print()
 
-    contacts = {"Emails": emails,
-                "Phone numbers": phone_numbers}
+    contacts = {"Email": emails,
+                "Phone number": phone_numbers}
 
     save_contacts("output/contacts.xlsx", normalized_url, contacts)
     print("THE CONTACTS ARE SAVED.")
