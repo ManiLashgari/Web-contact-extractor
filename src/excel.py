@@ -1,8 +1,5 @@
 """
-Initialize an Excel workbook for storing extracted website contacts.
-
-Creates a worksheet named "Contacts" and adds column headers
-for the website, contact type, and extracted value.
+Utilities for saving extracted website contacts to Excel files.
 """
 
 import os
@@ -15,39 +12,56 @@ def save_contacts(
     contacts: dict[str, list[str]],
 ) -> None:
     """
-    Save extracted contacts to an Excel file.
+    Save extracted contacts to an Excel file without duplicates.
 
     Create a new workbook with headers if the file does not exist.
-    Otherwise, append contacts to the existing workbook.
+    Otherwise, append only contacts that are not already present.
 
     Args:
         excel_path: Path to the Excel file.
         website_url: URL of the website being processed.
         contacts: Dictionary mapping contact types to lists of values.
     """
+    os.makedirs(os.path.dirname(excel_path) or ".", exist_ok=True)
+
     if os.path.exists(excel_path):
         workbook = load_workbook(excel_path)
-        worksheet = (
-            workbook["Contacts"]
-            if "Contacts" in workbook.sheetnames
-            else workbook.create_sheet("Contacts")
-        )
-
-        if worksheet.max_row == 1 and worksheet["A1"].value is None:
-            worksheet.append(["URL", "Type", "Value"])
+        if "Contacts" in workbook.sheetnames:
+            worksheet = workbook["Contacts"]
+        else:
+            worksheet = workbook.create_sheet("Contacts")
     else:
         workbook = Workbook()
         worksheet = workbook.active
         worksheet.title = "Contacts"
-        worksheet.append(["URL", "Type", "Value"])
 
-    row_number = worksheet.max_row + 1
+    # Add headers if the first row is empty.
+    if all(
+        worksheet.cell(row=1, column=col).value is None
+        for col in range(1, 4)
+    ):
+        worksheet.cell(row=1, column=1, value="URL")
+        worksheet.cell(row=1, column=2, value="Type")
+        worksheet.cell(row=1, column=3, value="Value")
 
+    # Collect existing contact records, starting after the header.
+    existing_contacts = {
+        (row[0], row[1], row[2])
+        for row in worksheet.iter_rows(
+            min_row=2,
+            max_col=3,
+            values_only=True,
+        )
+        if all(value is not None for value in row)
+    }
+
+    # Insert only new contacts.
     for contact_type, contact_list in contacts.items():
         for contact in contact_list:
-            worksheet.cell(row=row_number, column=1, value=website_url)
-            worksheet.cell(row=row_number, column=2, value=contact_type)
-            worksheet.cell(row=row_number, column=3, value=contact)
-            row_number += 1
+            contact_record = (website_url, contact_type, contact)
+
+            if contact_record not in existing_contacts:
+                worksheet.append(list(contact_record))
+                existing_contacts.add(contact_record)
 
     workbook.save(excel_path)
