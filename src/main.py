@@ -13,7 +13,9 @@ from downloader import url_request
 
 from excel import save_contacts
 
-from extractor import extract_email, extract_phone_number
+from extractor import (extract_email,
+                       extract_phone_number,
+                       extract_links)
 
 from validators import is_valid_url, normalize_url
 
@@ -67,11 +69,19 @@ def main():
     print(phone_numbers)
     print()
 
+    links = extract_links(parsed_html)
+
+    print("-" * 20, "ECTRACTED LINKS", "-" * 20)
+    print(links)
+    print()
+
     contacts = {"Email": emails,
                 "Phone number": phone_numbers}
 
     save_contacts("output/contacts.xlsx", normalized_url, contacts)
     print("THE CONTACTS ARE SAVED.")
+
+
 
 
 if __name__ == "__main__":
