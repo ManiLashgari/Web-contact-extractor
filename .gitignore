@@ -6,3 +6,6 @@ tests/__pycache__/
 tests/.pytest_cache/
 pytest_cache/
 src/__pycache__/
+
+# output
+output
