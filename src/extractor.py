@@ -3,6 +3,7 @@ Utilities for extracting email addresses from HTML documents.
 """
 import re
 from bs4 import BeautifulSoup
+from urllib.parse import urlparse
 
 SOCIAL_MEDIA_DOMAINS = {
     "Instagram": ["instagram.com"],
@@ -69,7 +70,7 @@ def extract_links(soup: BeautifulSoup) -> list[str]:
     return links
 
 
-def extract_social_media(soup: BeautifulSoup) -> list[tuple[str, str]]:
+def extract_social_media(links_list: list[str]) -> list[tuple[str, str]]:
     """
         Extract social media from HTML text.
     
@@ -78,4 +79,29 @@ def extract_social_media(soup: BeautifulSoup) -> list[tuple[str, str]]:
     
         Returns:
             A list of potential social media found in the text.
-        """
+    """
+    social_media = []
+
+    for link in links_list:
+
+        parsed_link = urlparse(link)
+        netloc = parsed_link.netloc.lower().removeprefix("www.")
+
+        for platform, domains in SOCIAL_MEDIA_DOMAINS.items():
+
+            for domain in domains:
+
+                if domain == netloc or netloc.endswith("." + domain):
+                    item = (platform, parsed_link.netloc + parsed_link.path)
+
+                    if item not in social_media:
+                        social_media.append(item)
+
+                    break
+
+            else:
+                continue
+
+            break
+
+    return social_media
