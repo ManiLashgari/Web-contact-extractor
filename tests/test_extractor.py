@@ -4,7 +4,7 @@ Unit tests for the email extraction utility.
 
 from bs4 import BeautifulSoup
 
-from src.extractor import extract_email, extract_phone_number
+from src.extractor import extract_email, extract_phone_number, extract_links
 
 
 def test_extract_email_returns_single_email():
@@ -173,3 +173,69 @@ def test_extracts_phone_numbers_from_combined_html():
     result = extract_phone_number(soup)
 
     assert result == ["+994 50 123 4567", "(212) 555-1234"]
+
+
+def test_extracts_single_link():
+    """Extract the href attribute from a single anchor tag."""
+    soup = BeautifulSoup(
+        '<a href="https://example.com">Example</a>',
+        "html.parser",
+    )
+
+    result = extract_links(soup)
+
+    assert result == ["https://example.com"]
+
+
+def test_extracts_multiple_links():
+    """Extract href attributes from multiple anchor tags."""
+    html = """
+    <a href="https://example.com">Example</a>
+    <a href="https://google.com">Google</a>
+    <a href="/contact">Contact</a>
+    """
+    soup = BeautifulSoup(html, "html.parser")
+
+    result = extract_links(soup)
+
+    assert result == [
+        "https://example.com",
+        "https://google.com",
+        "/contact",
+    ]
+
+
+def test_ignores_anchor_tags_without_href():
+    """Ignore anchor tags that do not have an href attribute."""
+    html = """
+    <a href="https://example.com">Example</a>
+    <a>No link</a>
+    """
+    soup = BeautifulSoup(html, "html.parser")
+
+    result = extract_links(soup)
+
+    assert result == ["https://example.com"]
+
+
+def test_returns_empty_list_when_no_links_exist():
+    """Return an empty list when the HTML contains no anchor tags."""
+    soup = BeautifulSoup("<p>No links here.</p>", "html.parser")
+
+    result = extract_links(soup)
+
+    assert not result
+
+
+def test_preserves_link_order():
+    """Preserve the order in which links appear in the HTML."""
+    html = """
+    <a href="/first">First</a>
+    <a href="/second">Second</a>
+    <a href="/third">Third</a>
+    """
+    soup = BeautifulSoup(html, "html.parser")
+
+    result = extract_links(soup)
+
+    assert result == ["/first", "/second", "/third"]
