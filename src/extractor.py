@@ -70,7 +70,7 @@ def extract_links(soup: BeautifulSoup) -> list[str]:
     return links
 
 
-def extract_social_media(links_list: list[str]) -> list[tuple[str, str]]:
+def extract_social_media(links_list: list[str]) -> dict[str, list[str]]:
     """
         Extract social media from HTML text.
     
@@ -80,7 +80,7 @@ def extract_social_media(links_list: list[str]) -> list[tuple[str, str]]:
         Returns:
             A list of potential social media found in the text.
     """
-    social_media = []
+    social_media = {}
 
     for link in links_list:
 
@@ -92,10 +92,11 @@ def extract_social_media(links_list: list[str]) -> list[tuple[str, str]]:
             for domain in domains:
 
                 if domain == netloc or netloc.endswith("." + domain):
-                    item = (platform, parsed_link.netloc + parsed_link.path)
+                    social_media[platform] = []
+                    item = parsed_link.netloc + parsed_link.path
 
-                    if item not in social_media:
-                        social_media.append(item)
+                    if item not in social_media[platform]:
+                        social_media[platform].append(item)
 
                     break
 

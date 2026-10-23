@@ -15,7 +15,8 @@ from excel import save_contacts
 
 from extractor import (extract_email,
                        extract_phone_number,
-                       extract_links)
+                       extract_links,
+                       extract_social_media)
 
 from validators import is_valid_url, normalize_url
 
@@ -75,13 +76,22 @@ def main():
     print(links)
     print()
 
+    social_media = extract_social_media(links)
+
+    print("-" * 20, "ECTRACTED SOCIAL MEDIA", "-" * 20)
+    print(social_media)
+    print()
+
     contacts = {"Email": emails,
-                "Phone number": phone_numbers}
+                "Phone number": phone_numbers,
+                **social_media}
+
+    print("-" * 20, "CONTACTS", "-" * 20)
+    print(contacts)
+    print()
 
     save_contacts("output/contacts.xlsx", normalized_url, contacts)
     print("THE CONTACTS ARE SAVED.")
-
-
 
 
 if __name__ == "__main__":
