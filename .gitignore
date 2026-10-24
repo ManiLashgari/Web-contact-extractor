@@ -9,3 +9,6 @@ src/__pycache__/
 
 # output
 output
+
+# env
+.env
