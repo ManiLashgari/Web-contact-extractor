@@ -4,7 +4,7 @@ Unit tests for the email extraction utility.
 
 from bs4 import BeautifulSoup
 
-from src.extractor import extract_email, extract_phone_number, extract_links
+from src.extractor import extract_email, extract_phone_number, extract_links, extract_social_media
 
 
 def test_extract_email_returns_single_email():
@@ -239,3 +239,95 @@ def test_preserves_link_order():
     result = extract_links(soup)
 
     assert result == ["/first", "/second", "/third"]
+
+
+def test_extracts_instagram_link():
+    """Extract an Instagram link from the input list."""
+    links = ["https://www.instagram.com/example/"]
+
+    result = extract_social_media(links)
+
+    assert result == {
+        "Instagram": ["www.instagram.com/example/"]
+    }
+
+
+def test_extracts_telegram_link():
+    """Extract a Telegram link from the input list."""
+    links = ["https://t.me/example"]
+
+    result = extract_social_media(links)
+
+    assert result == {
+        "Telegram": ["t.me/example"]
+    }
+
+
+def test_extracts_multiple_social_media_platforms():
+    """Extract links from multiple social media platforms."""
+    links = [
+        "https://www.instagram.com/example/",
+        "https://t.me/example",
+        "https://www.facebook.com/example",
+    ]
+
+    result = extract_social_media(links)
+
+    assert result == {
+        "Instagram": ["www.instagram.com/example/"],
+        "Telegram": ["t.me/example"],
+        "Facebook": ["www.facebook.com/example"],
+    }
+
+
+def test_does_not_duplicate_identical_links():
+    """Ensure identical links appear only once in the results."""
+    links = [
+        "https://instagram.com/example",
+        "https://instagram.com/example",
+    ]
+
+    result = extract_social_media(links)
+
+    assert result == {
+        "Instagram": ["instagram.com/example"]
+    }
+
+
+def test_ignores_non_social_media_links():
+    """Ignore links whose domains are not recognized social platforms."""
+    links = [
+        "https://example.com",
+        "https://mywebsite.org/contact",
+    ]
+
+    result = extract_social_media(links)
+
+    assert not result
+
+
+def test_returns_empty_dictionary_for_empty_input():
+    """Return an empty dictionary when no links are provided."""
+    result = extract_social_media([])
+
+    assert not result
+
+
+def test_matches_subdomains_of_social_media_domains():
+    """Recognize a social platform when its domain is a subdomain."""
+    links = ["https://m.instagram.com/example"]
+
+    result = extract_social_media(links)
+
+    assert result == {
+        "Instagram": ["m.instagram.com/example"]
+    }
+
+
+def test_ignores_domains_that_only_contain_a_social_domain_name():
+    """Avoid matching unrelated domains containing a platform's name."""
+    links = ["https://notinstagram.com/example"]
+
+    result = extract_social_media(links)
+
+    assert not result
