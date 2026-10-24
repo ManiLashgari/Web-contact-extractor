@@ -21,6 +21,8 @@ A Python application that extracts contact information and social media links fr
 - Beautiful Soup 4
 - OpenPyXL
 - pytest
+- python-dotenv
+- python-telegram-bot
 
 ## Project Structure
 
