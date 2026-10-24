@@ -1,4 +1,4 @@
-# Web Contact Extractor
+<h1 align="center">Web Contact Extractor</h1>
 
 A Python application that extracts contact information and social media links from a website and saves the results to an Excel spreadsheet.
 
@@ -9,7 +9,6 @@ A Python application that extracts contact information and social media links fr
 - **HTML parsing** — parses HTML using BeautifulSoup.
 - **Email extraction** — finds email addresses in visible page text.
 - **Phone number extraction** — identifies potential phone numbers using regular expressions.
-- **Link extraction** — collects links from HTML anchor tags.
 - **Social media detection** — identifies links associated with platforms such as Instagram, Facebook, X, LinkedIn, Telegram, YouTube, TikTok, Threads, Pinterest, Snapchat, WhatsApp, Discord, and Reddit.
 - **Excel export** — saves extracted contacts to an Excel workbook.
 - **Duplicate prevention** — avoids adding contact records that already exist in the spreadsheet.
@@ -54,11 +53,9 @@ web-contact-extractor/
 ### 1. Clone the repository
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/ManiLashgari/Web-contact-extractor
 cd web-contact-extractor
 ```
-
-Replace `<repository-url>` with the URL of your repository.
 
 ### 2. Create a virtual environment
 
@@ -138,44 +135,12 @@ These rows are illustrative examples of the output format.
 
 Existing records are checked before new records are appended, helping prevent duplicate entries for the same website, contact type, and value.
 
-## Running Tests
-
-Run the test suite from the project root:
-
-```bash
-pytest
-```
-
-The tests cover:
-
-- URL normalization and validation
-- Website request behavior
-- HTML parsing
-- Email and phone number extraction
-- Link and social media extraction
-- Excel file creation and contact storage
-
-## Limitations
-
-- **Single-page extraction:** The application processes the URL entered by the user. It does not automatically crawl other pages on the website.
-- **Pattern-based extraction:** Email and phone number extraction relies on regular expressions and may miss valid contacts or identify false positives.
-- **Visible text:** Email addresses and phone numbers are extracted from text returned by BeautifulSoup's `get_text()` method. Contacts present only in images, scripts, or other non-visible page content may not be found.
-- **Basic URL validation:** URL validation checks the HTTP/HTTPS scheme and whether the hostname contains a dot. It does not guarantee that the website exists or is reachable.
-- **Network errors:** A connection error is printed by the downloader, which returns `None`. The main application does not currently handle that result before parsing.
-- **Social media links:** Social media detection depends on the configured domain list and links found in anchor tags. Multiple different links from the same social platform may not all be preserved in the current implementation.
-
 ## Future Improvements
 
-Potential improvements include:
+- [] Telegram bot
+- [] Adding support for crawling selected internal pages
 
-- Better handling of connection errors and HTTP response statuses
-- More comprehensive URL validation
-- Improved phone number validation
-- Preserving multiple links for each social media platform
-- Adding command-line arguments instead of interactive input
-- Expanding test coverage for error cases and Excel workbook edge cases
-- Adding support for crawling selected internal pages
+## Team
 
-## License
-
-No license has been specified yet. Add a license file if you intend to distribute or reuse this project publicly.
+- [Mani Lashgari](https://github.com/ManiLashgari)
+- [Daniyal Iran Mehr (Advisor)](https://github.com/Daniyaliranmehr)
