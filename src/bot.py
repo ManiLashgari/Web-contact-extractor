@@ -12,6 +12,12 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     "\n\n Please send me a website URL.")
 
 
+async def handle_message(update: Update, context: ContextTypes):
+    message = update.message.text
+    print(f"Recived message: {message}")
+    await update.message.reply_text(f"You sent: {message}")
+
+
 def main():
     if not token:
         raise RuntimeError("TELEGRAM_BOT_TOKEN is not set in .env")
