@@ -3,7 +3,9 @@ import os
 from telegram import Update
 from telegram.ext import (ContextTypes,
                           Application,
-                          CommandHandler)
+                          CommandHandler,
+                          MessageHandler,
+                          filters)
 
 
 load_dotenv()
@@ -29,7 +31,11 @@ def main():
                   .build())
 
     application.add_handler(CommandHandler("start", start))
+
     print("Bot is starting...")
+
+    application.add_handler(MessageHandler(
+        filters.TEXT & ~filters.COMMAND, handle_message))
 
     application.run_polling()
 
