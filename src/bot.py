@@ -10,7 +10,7 @@ load_dotenv()
 token = os.getenv("TELEGRAM_BOT_TOKEN")
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.massage.reply_text("Hello! Welcome to Web Contact Extractor."
+    await update.message.reply_text("Hello! Welcome to Web Contact Extractor."
     "\n\n Please send me a website URL.")
 
 
