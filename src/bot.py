@@ -1,11 +1,18 @@
 from dotenv import load_dotenv
 import os
 from telegram import Update
-from telegram.ext import (ContextTypes,
-                          Application,
-                          CommandHandler,
-                          MessageHandler,
-                          filters)
+from telegram.ext import (
+    ContextTypes,
+    Application,
+    CommandHandler,
+    MessageHandler,
+    filters
+)
+
+from validators import (
+    normalize_url,
+    is_valid_url
+)                          
 
 
 load_dotenv()
@@ -19,7 +26,19 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def handle_message(update: Update, context: ContextTypes):
     message = update.message.text
     print(f"[INFO] Recived message: {message}")
-    await update.message.reply_text(f"You sent: {message}")
+
+    normalized_url = normalize_url(message)
+    print(f"[INFO] Normalized URL: {normalized_url}")
+
+    is_valid = is_valid_url(normalized_url)
+
+    if not is_valid:
+        await update.message.reply_text("Invalid URL ❌ Please send a valid website URL.")
+        print(f"[ERROR] The URL is invalid!: {normalized_url}")
+        return
+
+    await update.message.reply_text(f"I received your URL ✅")
+    print(f"[INFO] Valid URL received: {normalized_url}")
 
 
 def main():
