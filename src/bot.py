@@ -1,7 +1,9 @@
 from dotenv import load_dotenv
 import os
 from telegram import Update
-from telegram.ext import ContextTypes
+from telegram.ext import (ContextTypes,
+                          Application,
+                          CommandHandler)
 
 
 load_dotenv()
@@ -21,10 +23,15 @@ async def handle_message(update: Update, context: ContextTypes):
 def main():
     if not token:
         raise RuntimeError("TELEGRAM_BOT_TOKEN is not set in .env")
-    else:
-        start()
 
-    print("Waiting for user input...")
+    application = (Application.builder()
+                  .token(token)
+                  .build())
+
+    application.add_handler(CommandHandler("start", start))
+    print("Bot is starting...")
+
+    application.run_polling()
 
 
 if __name__ == "__main__":
