@@ -1,6 +1,8 @@
 """
-Utilities for extracting email addresses from HTML documents.
+Utilities for extracting contact information, website links, and
+social media links from HTML documents.
 """
+
 import re
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse
@@ -24,13 +26,23 @@ SOCIAL_MEDIA_DOMAINS = {
 
 def extract_email(soup: BeautifulSoup) -> list[str]:
     """
-    Extract email addresses from text.
+    Extract email addresses from the text content of an HTML document.
 
-    Args:
-        text: Text containing potential email addresses.
+    Parameters
+    ----------
+    soup : BeautifulSoup
+        BeautifulSoup object containing the parsed HTML document.
 
-    Returns:
-        A list of email addresses found in the text.
+    Returns
+    -------
+    list[str]
+        List of email addresses found in the document's text content.
+
+    Notes
+    -----
+    Email addresses are identified using a regular expression.
+    Only text extracted through BeautifulSoup's get_text() method
+    is searched.
     """
     text = soup.get_text(separator=" ", strip=True)
 
@@ -41,13 +53,24 @@ def extract_email(soup: BeautifulSoup) -> list[str]:
 
 def extract_phone_number(soup: BeautifulSoup) -> list[str]:
     """
-    Extract potential phone numbers from HTML text.
+    Extract potential phone numbers from an HTML document.
 
-    Args:
-        soup: A BeautifulSoup object containing parsed HTML.
+    Parameters
+    ----------
+    soup : BeautifulSoup
+        BeautifulSoup object containing the parsed HTML document.
 
-    Returns:
-        A list of potential phone numbers found in the text.
+    Returns
+    -------
+    list[str]
+        List of potential phone numbers found in the document's
+        text content.
+
+    Notes
+    -----
+    Phone numbers are identified using a regular expression that
+    supports several international and local number formats.
+    The extracted numbers are not independently validated.
     """
     text = soup.get_text(separator=" ", strip=True)
 
@@ -61,7 +84,18 @@ def extract_phone_number(soup: BeautifulSoup) -> list[str]:
 
 def extract_links(soup: BeautifulSoup) -> list[str]:
     """
-    Extract the link of all <a> tags.
+    Extract hyperlink URLs from HTML anchor tags.
+
+    Parameters
+    ----------
+    soup : BeautifulSoup
+        BeautifulSoup object containing the parsed HTML document.
+
+    Returns
+    -------
+    list[str]
+        List of href attribute values from anchor tags.
+        Anchor tags without an href attribute are ignored.
     """
     links = []
     for tag in soup.find_all("a", href=True):
@@ -72,13 +106,28 @@ def extract_links(soup: BeautifulSoup) -> list[str]:
 
 def extract_social_media(links_list: list[str]) -> dict[str, list[str]]:
     """
-        Extract social media from HTML text.
-    
-        Args:
-            soup: A BeautifulSoup object containing parsed HTML.
-    
-        Returns:
-            A list of potential social media found in the text.
+    Identify social media links from a list of URLs.
+
+    Parameters
+    ----------
+    links_list : list[str]
+        List of URLs to check for supported social media domains.
+
+    Returns
+    -------
+    dict[str, list[str]]
+        Dictionary mapping recognized social media platform names
+        to lists containing their corresponding hostnames and paths.
+
+    Notes
+    -----
+    Supported platforms include Instagram, Facebook, X, LinkedIn,
+    Telegram, YouTube, TikTok, Threads, Pinterest, Snapchat,
+    WhatsApp, Discord, and Reddit.
+
+    Domain matching supports the configured domains and their
+    subdomains. The extracted values contain the hostname and path
+    without the URL scheme or query parameters.
     """
     social_media = {}
 

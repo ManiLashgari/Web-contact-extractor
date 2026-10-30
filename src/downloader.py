@@ -7,17 +7,27 @@ import requests
 
 def url_request(url: str) -> str:
     """
-    Send a GET request to a URL and return the response content.
+    Send an HTTP GET request to a website and return its HTML content.
 
-    Args:
-        url: The URL to request.
+    Parameters
+    ----------
+    url : str
+        URL of the website to download.
 
-    Returns:
-        The HTML content returned by the server.
+    Returns
+    -------
+    str or None
+        HTML content returned by the server.
+        Returns None if a connection error occurs.
 
-    Raises:
-        requests.exceptions.ConnectionError: If a connection
-            to the server cannot be established.
+    Notes
+    -----
+    The request uses a timeout of 10 seconds.
+
+    Raises
+    ------
+    No exceptions are explicitly raised for connection errors.
+    A connection error is printed to the console.
     """
     try:
         response = requests.get(url, timeout=10)

@@ -25,8 +25,14 @@ def main():
     """
     Run the web contact extractor application.
 
-    Prompts the user for a website URL, validates and normalizes
-    it, downloads the website content, and parses the HTML.
+    Prompts the user to enter a website URL, normalizes and validates
+    the URL, downloads and parses the website HTML, extracts contact
+    information, and saves the results to an Excel file.
+
+    Raises
+    ------
+    SystemExit
+        If the entered URL is invalid.
     """
 
     url = input("Enter a website URL: ")

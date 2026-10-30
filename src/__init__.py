@@ -1,7 +1,29 @@
 """
 Web contact extractor package.
 
-Provides utilities for validating and normalizing website URLs.
+Provides functions for URL validation and normalization, website
+content downloading and parsing, email extraction, and saving
+extracted contacts to Excel files.
+
+Exports
+-------
+normalize_url
+    Normalize website URLs.
+
+is_valid_url
+    Validate HTTP and HTTPS URLs.
+
+url_request
+    Download HTML content from a website.
+
+parser
+    Parse HTML content using BeautifulSoup.
+
+extract_email
+    Extract email addresses from parsed HTML.
+
+save_contacts
+    Save extracted contacts to an Excel file.
 """
 
 from .validators import (

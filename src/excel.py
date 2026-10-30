@@ -12,15 +12,39 @@ def save_contacts(
     contacts: dict[str, list[str]],
 ) -> None:
     """
-    Save extracted contacts to an Excel file without duplicates.
+    Save extracted website contacts to an Excel workbook without duplicates.
 
-    Create a new workbook with headers if the file does not exist.
-    Otherwise, append only contacts that are not already present.
+    Creates a new workbook with column headers if the file does not exist.
+    Otherwise, adds only contact records that are not already present.
 
-    Args:
-        excel_path: Path to the Excel file.
-        website_url: URL of the website being processed.
-        contacts: Dictionary mapping contact types to lists of values.
+    Parameters
+    ----------
+    excel_path : str
+        Path to the Excel workbook.
+        The parent directory is created if it does not exist.
+
+    website_url : str
+        URL of the website associated with the extracted contacts.
+
+    contacts : dict[str, list[str]]
+        Dictionary mapping contact types to lists of extracted values.
+        Each contact is stored as a separate record.
+
+    Returns
+    -------
+    None
+        Saves the workbook to the specified path.
+
+    Notes
+    -----
+    The workbook contains a worksheet named ``Contacts`` with three columns:
+
+    - URL: Website URL associated with the contact.
+    - Type: Type of contact, such as Email or Phone number.
+    - Value: Extracted contact information.
+
+    Duplicate records are identified by comparing the website URL,
+    contact type, and contact value.
     """
     os.makedirs(os.path.dirname(excel_path) or ".", exist_ok=True)
 

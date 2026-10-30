@@ -7,11 +7,11 @@ from urllib.parse import urlparse
 def normalize_url(url: str) -> str:
     """
     Normalize a URL by removing surrounding whitespace and adding HTTPS
-    if no URL scheme is provided.
+    if no HTTP or HTTPS scheme is provided.
 
     Parameters
     ----------
-    url
+    url : str
         URL to normalize.
 
     Returns
@@ -19,6 +19,10 @@ def normalize_url(url: str) -> str:
     str
         Normalized URL with surrounding whitespace removed and an HTTPS
         scheme added if no HTTP or HTTPS scheme is present.
+
+    Notes
+    -----
+    Existing HTTP and HTTPS schemes are preserved.
     """
     url = url.strip()
 
@@ -30,18 +34,24 @@ def normalize_url(url: str) -> str:
 
 def is_valid_url(url: str) -> bool:
     """
-    Validate whether a URL has a valid HTTP or HTTPS scheme, hostname and domain.
+    Validate whether a URL has an HTTP or HTTPS scheme and a hostname
+    containing a dot.
 
     Parameters
     ----------
-    url
+    url : str
         URL to validate.
 
     Returns
     -------
     bool
-        ``True`` if the URL has an HTTP or HTTPS scheme and a hostname
-        containing a dot; otherwise, ``False``.
+        True if the URL has an HTTP or HTTPS scheme and its hostname
+        contains a dot; otherwise, False.
+
+    Notes
+    -----
+    This function performs basic URL validation. It does not check
+    whether the website exists or is reachable.
     """
     parsed_url = urlparse(url)
 
