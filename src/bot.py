@@ -88,6 +88,14 @@ async def handle_message(update: Update, context: ContextTypes):
         print(f"[INFO] The links are extracted:\n{links}")
         print(f"[INFO] The number of links: {len(links)}")
 
+    social_media = extract_social_media(links)
+
+    if not social_media:
+        print("[INFO] No social_media_contact found.")
+    else:
+        print(f"[INFO] The social_media_contacts are extracted:\n{social_media}")
+        print(f"[INFO] The number of social_media_contacts: {len(social_media)}")
+
 
 def main():
     if not token:
