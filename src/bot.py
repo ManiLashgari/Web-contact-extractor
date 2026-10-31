@@ -61,6 +61,15 @@ async def handle_message(update: Update, context: ContextTypes):
     parsed_html = parser(html)
     print("[INFO] The HTML is parsed.")
 
+    emails = extract_email(parsed_html)
+
+    if not emails:
+        print("[INFO] No email found.")
+    else:
+        print(f"[INFO] The emails are extracted:\n{emails}")
+
+
+
 
 def main():
     if not token:
