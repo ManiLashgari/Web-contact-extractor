@@ -96,6 +96,26 @@ async def handle_message(update: Update, context: ContextTypes):
         print(f"[INFO] The social_media_contacts are extracted:\n{social_media}")
         print(f"[INFO] The number of social_media_contacts: {len(social_media)}")
 
+    contacts = {"Email": emails,
+                    "Phone number": phone_numbers,
+                    **social_media}
+
+    if not contacts:
+        await update.message.reply_text("There is no contacts on this website ❌")
+        print("[INFO] No contact found.")
+        return
+
+    await update.message.reply_text(f"Contacts are extracted ✅\
+                                    \nEmails: {len(emails)}\
+                                    \nPhone Numbers: {len(phone_numbers)}\
+                                    \nSocial media:{len(social_media)}")
+
+    print(f"[INFO] The contacts are extracted:\n{contacts}")
+    print(f"[INFO] The number of contacts: {len(contacts)}")
+
+    save_contacts("output/contacts.xlsx", normalized_url, contacts)
+    print("[INFO] THE CONTACTS ARE SAVED.")
+
 
 def main():
     if not token:
