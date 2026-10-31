@@ -48,10 +48,9 @@ async def handle_message(update: Update, context: ContextTypes):
         print(f"[ERROR] The URL is invalid!: {normalized_url}")
         return
 
-    await update.message.reply_text("I received your URL ✅")
     print(f"[INFO] Valid URL received: {normalized_url}")
 
-    html = url_request(normalize_url)
+    html = url_request(normalized_url)
 
     if not html:
         await update.message.reply_text("The HTML is empty ❌ Please send another website URL.")
