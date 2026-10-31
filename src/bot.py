@@ -12,7 +12,18 @@ from telegram.ext import (
 from validators import (
     normalize_url,
     is_valid_url
-)                          
+)
+
+from parser import parser
+
+from downloader import url_request
+
+from excel import save_contacts
+
+from extractor import (extract_email,
+                       extract_phone_number,
+                       extract_links,
+                       extract_social_media)
 
 
 load_dotenv()
@@ -37,8 +48,16 @@ async def handle_message(update: Update, context: ContextTypes):
         print(f"[ERROR] The URL is invalid!: {normalized_url}")
         return
 
-    await update.message.reply_text(f"I received your URL ✅")
+    await update.message.reply_text("I received your URL ✅")
     print(f"[INFO] Valid URL received: {normalized_url}")
+
+    html = url_request(normalize_url)
+
+    if not html:
+        await update.message.reply_text("The HTML is empty ❌ Please send another website URL.")
+        print("[ERROR] The HTML is empty.")
+        return
+    print(f"[INFO] The HTML is received. HTML length: {len(html)}")
 
 
 def main():
