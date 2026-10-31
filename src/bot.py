@@ -1,6 +1,9 @@
-from dotenv import load_dotenv
 import os
+
+from dotenv import load_dotenv
+
 from telegram import Update
+
 from telegram.ext import (
     ContextTypes,
     Application,
@@ -67,15 +70,23 @@ async def handle_message(update: Update, context: ContextTypes):
         print("[INFO] No email found.")
     else:
         print(f"[INFO] The emails are extracted:\n{emails}")
+        print(f"[INFO] The number of emails: {len(emails)}")
 
     phone_numbers = extract_phone_number(parsed_html)
 
-    if not emails:
+    if not phone_numbers:
         print("[INFO] No phone number found.")
     else:
         print(f"[INFO] The phone numbers are extracted:\n{phone_numbers}")
+        print(f"[INFO] The number of phone numbers: {len(phone_numbers)}")
 
+    links = extract_links(parsed_html)
 
+    if not links:
+        print("[INFO] No link found.")
+    else:
+        print(f"[INFO] The links are extracted:\n{links}")
+        print(f"[INFO] The number of links: {len(links)}")
 
 
 def main():
