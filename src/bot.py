@@ -58,6 +58,9 @@ async def handle_message(update: Update, context: ContextTypes):
         return
     print(f"[INFO] The HTML is received. HTML length: {len(html)}")
 
+    parsed_html = parser(html)
+    print("[INFO] The HTML is parsed.")
+
 
 def main():
     if not token:
