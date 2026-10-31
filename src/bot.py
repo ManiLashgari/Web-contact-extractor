@@ -68,6 +68,13 @@ async def handle_message(update: Update, context: ContextTypes):
     else:
         print(f"[INFO] The emails are extracted:\n{emails}")
 
+    phone_numbers = extract_phone_number(parsed_html)
+
+    if not emails:
+        print("[INFO] No phone number found.")
+    else:
+        print(f"[INFO] The phone numbers are extracted:\n{phone_numbers}")
+
 
 
 
