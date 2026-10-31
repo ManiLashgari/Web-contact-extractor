@@ -1,3 +1,37 @@
+"""
+Telegram bot for extracting contact information from websites.
+
+Provides a Telegram interface for the Web Contact Extractor application.
+Users can send website URLs to the bot, which validates and normalizes
+the URLs, downloads and parses website HTML, and extracts contact
+information.
+
+The extracted information includes:
+    - Email addresses
+    - Phone numbers
+    - Website links
+    - Social media links
+
+Extracted contacts are saved to an Excel workbook at
+``output/contacts.xlsx``.
+
+The bot uses the python-telegram-bot library to handle incoming
+messages and respond to users asynchronously.
+
+Environment Variables
+---------------------
+TELEGRAM_BOT_TOKEN : str
+    Telegram bot token used to authenticate the bot.
+    Must be defined in the ``.env`` file.
+
+Dependencies
+------------
+python-telegram-bot
+python-dotenv
+requests
+beautifulsoup4
+openpyxl
+"""
 import os
 
 from dotenv import load_dotenv
@@ -33,11 +67,60 @@ load_dotenv()
 token = os.getenv("TELEGRAM_BOT_TOKEN")
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """
+    Start the Telegram bot and send a welcome message to the user.
+
+    Parameters
+    ----------
+    update : Update
+        Telegram update object containing the incoming command
+        and information about the user and chat.
+
+    context : ContextTypes.DEFAULT_TYPE
+        Context object containing information and data associated
+        with the current update.
+
+    Returns
+    -------
+    None
+        Sends a welcome message asking the user to provide
+        a website URL.
+    """
     await update.message.reply_text("Hello! Welcome to Web Contact Extractor."
     "\n\nPlease send me a website URL.")
 
 
 async def handle_message(update: Update, context: ContextTypes):
+    """
+    Process a website URL sent by the user and extract contact information.
+
+    Normalizes and validates the URL, downloads the website HTML,
+    parses its content, extracts email addresses, phone numbers,
+    website links, and social media links, and saves the extracted
+    contacts to an Excel file.
+
+    Parameters
+    ----------
+    update : Update
+        Telegram update object containing the incoming text message
+        and information about the user and chat.
+
+    context : ContextTypes
+        Context object containing information and data associated
+        with the current update.
+
+    Returns
+    -------
+    None
+        Sends a response to the user with the extraction results.
+        Returns early if the URL is invalid, the downloaded HTML
+        is empty, or no contacts are found.
+
+    Notes
+    -----
+    Extracted contacts are saved to ``output/contacts.xlsx``.
+    Processing information and errors are printed to the console.
+    """
     message = update.message.text
     print(f"[INFO] Recived message: {message}")
 
@@ -118,6 +201,23 @@ async def handle_message(update: Update, context: ContextTypes):
 
 
 def main():
+    """
+    Initialize and run the Telegram bot.
+
+    Loads the bot token from environment variables, creates the
+    Telegram application, registers the command and message handlers,
+    and starts polling for incoming updates.
+
+    Returns
+    -------
+    None
+        Runs the Telegram bot until it is stopped.
+
+    Raises
+    ------
+    RuntimeError
+        If the ``TELEGRAM_BOT_TOKEN`` environment variable is not set.
+    """
     if not token:
         raise RuntimeError("[ERROR] TELEGRAM_BOT_TOKEN is not set in .env")
 
