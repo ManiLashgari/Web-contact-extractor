@@ -199,6 +199,15 @@ async def handle_message(update: Update, context: ContextTypes):
     save_contacts("output/contacts.xlsx", normalized_url, contacts)
     print("[INFO] THE CONTACTS ARE SAVED.")
 
+    with open("output/contacts.xlsx", "rb") as file:
+        await update.message.reply_document(
+            document=file,
+            filename="contacts.xlsx",
+            caption="Here is your extracted contacts Excel file! 📊"
+        )
+
+    print("[INFO] THE EXCEL FILE IS SENT.")
+
 
 def main():
     """
