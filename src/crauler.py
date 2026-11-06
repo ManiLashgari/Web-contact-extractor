@@ -159,3 +159,25 @@ def crawl_selected_pages(base_url: str, parsed_html: object, max_pages: int=5, d
         print(f"[INFO] Crawled: {page_url}")
 
     return results
+
+
+def merge_unique(*lists):
+    """Merge lists into one list, removing duplicates and keeping order."""
+    merged = []
+
+    for items in lists:
+        for item in items:
+            if item not in merged:
+                merged.append(item)
+
+    return merged
+
+
+def merge_social_media(target, new):
+    """
+    Merge a social media dict into another one in place.
+ 
+    Both dicts map a platform name to a list of links.
+    """
+    for platform, links in new.items():
+        target[platform] = merge_unique(target.get(platform, []), links)
