@@ -1,6 +1,6 @@
 <h1 align="center">Web Contact Extractor</h1>
 
-A Python application that extracts contact information and social media links from a website and saves the results to an Excel spreadsheet.
+A Python application that extracts contact information such as: Gmail addresses, phone numbers, and social media links from a website and saves the results to an Excel spreadsheet.
 
 ## Features
 
@@ -13,6 +13,7 @@ A Python application that extracts contact information and social media links fr
 - **Excel export** — saves extracted contacts to an Excel workbook.
 - **Duplicate prevention** — avoids adding contact records that already exist in the spreadsheet.
 - **Automated tests** — includes pytest tests for the main application modules.
+- **User Interface** — A Telegram bot to send the website URL and recieve the Excel file.
 
 ## Technologies
 
@@ -32,6 +33,7 @@ web-contact-extractor/
 │   └── contacts.xlsx
 ├── src/
 │   ├── __init__.py
+│   ├── bot.py
 │   ├── downloader.py
 │   ├── excel.py
 │   ├── extractor.py
@@ -47,7 +49,6 @@ web-contact-extractor/
 ├── .gitignore
 ├── README.md
 ├── requirements.txt
-└── temp.py
 ```
 
 ## Installation
@@ -85,21 +86,7 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-The required packages are specified in `requirements.txt`:
-
-```text
-beautifulsoup4==4.15.0
-openpyxl==3.1.5
-requests==2.28.1
-```
-
-To run the tests, install pytest as well if it is not already available:
-
-```bash
-pip install pytest
-```
-
-## Usage
+## Usage (MUST BE MODIFIED)
 
 Run the application from the project's root directory:
 
@@ -139,8 +126,8 @@ Existing records are checked before new records are appended, helping prevent du
 
 ## Future Improvements
 
-- [] Telegram bot
-- [] Adding support for crawling selected internal pages
+- [x] Telegram bot
+- [ ] Adding support for crawling selected internal pages
 
 ## Team
 
