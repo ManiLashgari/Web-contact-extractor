@@ -72,3 +72,45 @@ def get_internal_links(base_url: str, parsed_html: str) -> list[str]:
         internal.append(absolute)
 
     return internal
+
+
+def select_pages(base_url: str, internal_links: list[str],
+                 keywords: tuple=PRIORITY_KEYWORDS, max_pages: int=5) -> list[str]:
+    """
+    Select internal links likely to contain contact information.
+ 
+    Parameters
+    ----------
+    base_url : str
+        The main page URL. It is never selected again.
+ 
+    internal_links : list[str]
+        Links returned by ``get_internal_links``.
+ 
+    keywords : tuple[str, ...]
+        A link is selected if its path contains any of these words.
+ 
+    max_pages : int
+        Maximum number of pages to select.
+ 
+    Returns
+    -------
+    list[str]
+        Up to ``max_pages`` URLs to crawl.
+    """
+    base_key = base_url.rstrip("/")
+    selected = []
+
+    for link in internal_links:
+        if link.rstrip("/") == base_key:
+            continue
+
+        path = urlparse(link).path.lower()
+
+        if any(keyword in path for keyword in keywords):
+            selected.append(link)
+
+        if len(selected) >= max_pages:
+            break
+
+    return selected
