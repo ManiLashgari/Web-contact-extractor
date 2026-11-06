@@ -1,5 +1,7 @@
 import time
 from urllib.parse import urljoin, urlparse, urldefrag
+from parser import parser
+from downloader import url_request
 
 PRIORITY_KEYWORDS = (
     "contact",
@@ -25,7 +27,7 @@ def _host(url: str) -> str:
     return host[4:] if host.startswith("www.") else host
 
 
-def get_internal_links(base_url: str, parsed_html: str) -> list[str]:
+def get_internal_links(base_url: str, parsed_html: object) -> list[str]:
     """
     Collect unique internal links from a parsed page.
  
@@ -114,3 +116,46 @@ def select_pages(base_url: str, internal_links: list[str],
             break
 
     return selected
+
+
+def crawl_selected_pages(base_url: str, parsed_html: object, max_pages: int=5, delay: int=1.0):
+    """
+    Download and parse the selected internal pages of a website.
+ 
+    Parameters
+    ----------
+    base_url : str
+        Normalized URL of the main page.
+ 
+    parsed_html : bs4.BeautifulSoup
+        Parsed HTML of the main page.
+ 
+    max_pages : int
+        Maximum number of internal pages to download.
+ 
+    delay : float
+        Seconds to wait before each request, to avoid hammering the site.
+ 
+    Returns
+    -------
+    list[tuple[str, bs4.BeautifulSoup]]
+        ``(page_url, parsed_page)`` for every page downloaded successfully.
+    """
+    links = get_internal_links(base_url, parsed_html)
+    pages = select_pages(base_url, links, max_pages=max_pages)
+    print(f"[INFO] Internal pages selected: {pages}")
+
+    results = []
+
+    for page_url in pages:
+        time.sleep(delay)
+        html = url_request(page_url)
+
+        if not html:
+            print(f"[WARNING] Skipping empty page: {page_url}")
+            continue
+
+        results.append((page_url, parser(html)))
+        print(f"[INFO] Crawled: {page_url}")
+
+    return results
