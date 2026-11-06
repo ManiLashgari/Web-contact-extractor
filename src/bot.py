@@ -191,10 +191,12 @@ async def handle_message(update: Update, context: ContextTypes):
     await update.message.reply_text(f"Contacts are extracted ✅\
                                     \nEmails: {len(emails)}\
                                     \nPhone Numbers: {len(phone_numbers)}\
-                                    \nSocial media:{len(social_media)}")
+                                    \nSocial media: {len(social_media)}")
 
     print(f"[INFO] The contacts are extracted:\n{contacts}")
-    print(f"[INFO] The number of contacts: {len(contacts)}")
+
+    print(f"[INFO] The number of contacts: "
+    f"{sum(len(contact_list) for contact_list in contacts.values())}")
 
     save_contacts("output/contacts.xlsx", normalized_url, contacts)
     print("[INFO] THE CONTACTS ARE SAVED.")
