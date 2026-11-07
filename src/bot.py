@@ -271,6 +271,8 @@ def main():
 
     application.add_handler(CommandHandler("start", start))
 
+    application.add_handler(CommandHandler("deep", deep))
+
     print("[INFO] Bot is starting...")
 
     application.add_handler(MessageHandler(
