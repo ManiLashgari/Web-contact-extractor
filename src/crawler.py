@@ -1,3 +1,42 @@
+"""
+Utilities for crawling selected internal website pages.
+
+Provides functions for discovering internal links, selecting pages
+likely to contain contact information, downloading and parsing selected
+pages, and merging extracted contact information without duplicates.
+
+The crawler prioritizes pages whose URLs contain predefined keywords,
+such as contact, about, team, support, and location.
+
+Constants
+---------
+PRIORITY_KEYWORDS : tuple[str, ...]
+    Keywords used to identify internal pages likely to contain
+    contact information.
+
+SKIP_EXTENSIONS : tuple[str, ...]
+    File extensions excluded from internal link collection.
+
+Functions
+---------
+_host
+    Extract the lowercase hostname from a URL.
+
+get_internal_links
+    Collect unique internal links from parsed HTML.
+
+select_pages
+    Select internal pages based on priority keywords.
+
+crawl_selected_pages
+    Download and parse selected internal pages.
+
+merge_unique
+    Merge multiple lists while preserving order and removing duplicates.
+
+merge_social_media
+    Merge social media links into an existing dictionary.
+"""
 import time
 from urllib.parse import urljoin, urlparse, urldefrag
 from parser import parser
