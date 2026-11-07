@@ -170,7 +170,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     print(f"[INFO] Valid URL received: {normalized_url}")
 
-    html = url_request(normalized_url)
+    html = await asyncio.to_thread(url_request, normalize_url)
 
     if not html:
         await update.message.reply_text("The HTML is empty ❌ Please send another website URL.")
