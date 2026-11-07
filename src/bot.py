@@ -92,7 +92,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         a website URL.
     """
     await update.message.reply_text("Hello! Welcome to Web Contact Extractor."
-    "\n\nPlease send me a website URL.")
+    "\n\nPlease send me a website URL." \
+    "\n\nUse /deep to turn on or off crawling of contact/about pages.")
 
 
 async def deep(update: Update, contex: ContextTypes.DEFAULT_TYPE):
