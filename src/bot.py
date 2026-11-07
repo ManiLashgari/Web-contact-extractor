@@ -46,6 +46,8 @@ from telegram.ext import (
     filters
 )
 
+import asyncio
+
 from validators import (
     normalize_url,
     is_valid_url
@@ -62,6 +64,9 @@ from extractor import (extract_email,
                        extract_links,
                        extract_social_media)
 
+from crawler import (crawl_selected_pages,
+                     merge_social_media,
+                     merge_unique)
 
 load_dotenv()
 token = os.getenv("TELEGRAM_BOT_TOKEN")
@@ -90,7 +95,35 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     "\n\nPlease send me a website URL.")
 
 
-async def handle_message(update: Update, context: ContextTypes):
+async def deep(update: Update, contex: ContextTypes.DEFAULT_TYPE):
+    """
+    Toggle deep crawling on or off for the current user.
+
+    Parameters
+    ----------
+    update : Update
+        Telegram update containing the user's message.
+    contex : ContextTypes.DEFAULT_TYPE
+        Context object containing user-specific data.
+
+    Returns
+    -------
+    None
+        Sends a message indicating whether deep crawling is enabled or disabled.
+
+    Notes
+    -----
+    The current deep-crawl setting is stored in ``contex.user_data``
+    under the ``"deep_crawl"`` key. If the setting is not already present,
+    it defaults to ``False``.
+    """
+    enabled = not contex.user_data.get("deep_crawl", False)
+    contex.user_data["deep_crawl"] = enabled
+    state = "ON ✅" if enabled else "OFF ❌"
+    await update.message.reply_text(f"Deep crawl is now {state}")
+
+
+async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """
     Process a website URL sent by the user and extract contact information.
 
