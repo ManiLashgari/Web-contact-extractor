@@ -262,7 +262,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     save_contacts(str(OUTPUT_PATH), normalized_url, contacts)
     print("[INFO] THE CONTACTS ARE SAVED.")
 
-    with open("output/contacts.xlsx", "rb") as file:
+    with open(OUTPUT_PATH, "rb") as file:
         await update.message.reply_document(
             document=file,
             filename="contacts.xlsx",
