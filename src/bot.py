@@ -61,6 +61,7 @@ from excel import save_contacts
 
 from extractor import (extract_email,
                        extract_phone_number,
+                       extract_links,
                        extract_social_media,
                        )
 
@@ -186,8 +187,11 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     print("[INFO] The HTML is parsed.")
 
     emails = extract_email(parsed_html)
+
     phone_numbers = extract_phone_number(parsed_html)
-    social_media = extract_social_media(parsed_html)
+
+    links = extract_links(parsed_html)
+    social_media = extract_social_media(links)
 
     if context.user_data.get("deep_crawl"):
         await update.message.reply_text(
@@ -198,8 +202,13 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         for page_url, page_soup in extra_pages:
             page_emails = extract_email(page_soup)
+
             page_phones = extract_phone_number(page_soup)
-            page_social = extract_social_media(page_soup)
+
+            page_links = extract_links(page_soup)
+
+            page_social = extract_social_media(page_links)
+
             emails = merge_unique(emails, page_emails)
             phone_numbers = merge_unique(phone_numbers, page_phones)
             merge_social_media(social_media, page_social)
