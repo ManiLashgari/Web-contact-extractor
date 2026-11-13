@@ -254,6 +254,8 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     print(f"[INFO] The number of contacts: "
     f"{sum(len(contact_list) for contact_list in contacts.values())}")
 
+    print("[INFO] Excel file path:", os.path.abspath("output/contacts.xlsx"))
+
     save_contacts("output/contacts.xlsx", normalized_url, contacts)
     print("[INFO] THE CONTACTS ARE SAVED.")
 
