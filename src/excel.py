@@ -70,22 +70,23 @@ def save_contacts(
 
     # Collect existing contact records, starting after the header.
     existing_contacts = {
-        (row[0], row[1], row[2])
-        for row in worksheet.iter_rows(
-            min_row=2,
-            max_col=3,
-            values_only=True,
-        )
-        if all(value is not None for value in row)
+    (row[1], row[2])
+    for row in worksheet.iter_rows(
+        min_row=2,
+        max_col=3,
+        values_only=True,
+    )
+    if row[1] is not None and row[2] is not None
     }
+
 
     # Insert only new contacts.
     for contact_type, contact_list in contacts.items():
         for contact in contact_list:
-            contact_record = (website_url, contact_type, contact)
+            contact_record = (contact_type, contact)
 
             if contact_record not in existing_contacts:
-                worksheet.append(list(contact_record))
+                worksheet.append([website_url, contact_type, contact])
                 existing_contacts.add(contact_record)
 
     workbook.save(excel_path)
