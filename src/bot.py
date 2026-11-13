@@ -181,6 +181,10 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     parsed_html = parser(html)
     print("[INFO] The HTML is parsed.")
 
+    if context.user_data.get("deep_crawl"):
+        await update.message.reply_text(
+        "Deep crawl is on 🔍 Checking contact/about pages.")
+
     emails = extract_email(parsed_html)
 
     if not emails:
