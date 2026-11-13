@@ -38,6 +38,8 @@ from dotenv import load_dotenv
 
 from telegram import Update
 
+from pathlib import Path
+
 from telegram.ext import (
     ContextTypes,
     Application,
@@ -68,6 +70,9 @@ from extractor import (extract_email,
 from crawler import (crawl_selected_pages,
                      merge_social_media,
                      merge_unique)
+
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+OUTPUT_PATH = PROJECT_ROOT / "output" / "contacts.xlsx"
 
 load_dotenv()
 token = os.getenv("TELEGRAM_BOT_TOKEN")
@@ -254,7 +259,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     print(f"[INFO] The number of contacts: "
     f"{sum(len(contact_list) for contact_list in contacts.values())}")
 
-    save_contacts("output/contacts.xlsx", normalized_url, contacts)
+    save_contacts(str(OUTPUT_PATH), normalized_url, contacts)
     print("[INFO] THE CONTACTS ARE SAVED.")
 
     with open("output/contacts.xlsx", "rb") as file:
