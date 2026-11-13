@@ -118,6 +118,7 @@ async def deep(update: Update, contex: ContextTypes.DEFAULT_TYPE):
     under the ``"deep_crawl"`` key. If the setting is not already present,
     it defaults to ``False``.
     """
+    print("[INFO] /deep is entered")
     enabled = not contex.user_data.get("deep_crawl", False)
     contex.user_data["deep_crawl"] = enabled
     state = "ON ✅" if enabled else "OFF ❌"
