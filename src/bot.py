@@ -91,6 +91,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         Sends a welcome message asking the user to provide
         a website URL.
     """
+    print("[INFO] /start is selected")
+    
     await update.message.reply_text("Hello! Welcome to Web Contact Extractor."
     "\n\nPlease send me a website URL." \
     "\n\nUse /deep to turn on or off crawling of contact/about pages.")
