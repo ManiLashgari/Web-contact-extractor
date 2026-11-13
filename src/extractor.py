@@ -76,8 +76,9 @@ def extract_phone_number(soup: BeautifulSoup) -> list[str]:
 
     phone_pattern = (
     r'(?<!\w)(?:\+\d{1,3}|00\d{1,3})[\s.-]?(?:\(?\d{2,4}\)?'
-    r'[\s.-]?)?\d{3,4}[\s.-]?\d{3,4}(?!\w)|(?<!\w)\(?\d{2,4}\)?[\s.-]\d{3,4}[\s.-]\d{3,4}(?!\w)'
-    )
+    r'[\s.-]?)?\d{3,4}[\s.-]?\d{3,4}(?!\w)|'
+    r'(?<!\w)\(?\d{2,4}\)?[\s-]\d{3,4}[\s-]\d{3,4}(?!\w)'
+)
 
     return re.findall(phone_pattern, text)
 
