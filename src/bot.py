@@ -92,8 +92,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         Sends a welcome message asking the user to provide
         a website URL.
     """
-    print("[INFO] /start is selected")
-    
+    print("[INFO] /start is entered.")
+
     await update.message.reply_text("Hello! Welcome to Web Contact Extractor."
     "\n\nPlease send me a website URL." \
     "\n\nUse /deep to turn on or off crawling of contact/about pages.")
@@ -121,7 +121,7 @@ async def deep(update: Update, contex: ContextTypes.DEFAULT_TYPE):
     under the ``"deep_crawl"`` key. If the setting is not already present,
     it defaults to ``False``.
     """
-    print("[INFO] /deep is entered")
+    print("[INFO] /deep is entered.")
     enabled = not contex.user_data.get("deep_crawl", False)
     contex.user_data["deep_crawl"] = enabled
     state = "ON ✅" if enabled else "OFF ❌"
@@ -253,8 +253,6 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     print(f"[INFO] The number of contacts: "
     f"{sum(len(contact_list) for contact_list in contacts.values())}")
-
-    print("[INFO] Excel file path:", os.path.abspath("output/contacts.xlsx"))
 
     save_contacts("output/contacts.xlsx", normalized_url, contacts)
     print("[INFO] THE CONTACTS ARE SAVED.")

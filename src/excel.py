@@ -68,7 +68,6 @@ def save_contacts(
         worksheet.cell(row=1, column=2, value="Type")
         worksheet.cell(row=1, column=3, value="Value")
 
-    # Collect existing contact records, starting after the header.
     existing_contacts = {
     (row[1], row[2])
     for row in worksheet.iter_rows(
@@ -80,7 +79,6 @@ def save_contacts(
     }
 
 
-    # Insert only new contacts.
     for contact_type, contact_list in contacts.items():
         for contact in contact_list:
             contact_record = (contact_type, contact)
